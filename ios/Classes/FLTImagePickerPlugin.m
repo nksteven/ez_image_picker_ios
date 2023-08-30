@@ -409,7 +409,7 @@ typedef NS_ENUM(NSInteger, ImagePickerClassType) { UIImagePickerClassType, PHPic
                                                                             _pickerViewController];
                                          } else if (status == PHAuthorizationStatusLimited) {
                                            [self
-                                               showPhotoLibraryWithPHPicker:self->
+                                            showPhotoLimitedLibraryWithPHPicker:self->
                                                                             _pickerViewController];
                                          } else {
                                            [self errorNoPhotoAccess:status];
@@ -420,7 +420,7 @@ typedef NS_ENUM(NSInteger, ImagePickerClassType) { UIImagePickerClassType, PHPic
     }
     case PHAuthorizationStatusAuthorized:
     case PHAuthorizationStatusLimited:
-      [self showPhotoLibraryWithPHPicker:_pickerViewController];
+      [self showPhotoLimitedLibraryWithPHPicker:_pickerViewController];
       break;
     case PHAuthorizationStatusDenied:
     case PHAuthorizationStatusRestricted:
@@ -471,6 +471,11 @@ typedef NS_ENUM(NSInteger, ImagePickerClassType) { UIImagePickerClassType, PHPic
   [[self viewControllerWithWindow:nil] presentViewController:pickerViewController
                                                     animated:YES
                                                   completion:nil];
+}
+
+- (void)showPhotoLimitedLibraryWithPHPicker:(PHPickerViewController *)pickerViewController
+    API_AVAILABLE(ios(14)) {
+    PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: pickerViewController)
 }
 
 - (void)showPhotoLibraryWithImagePicker:(UIImagePickerController *)imagePickerController {
